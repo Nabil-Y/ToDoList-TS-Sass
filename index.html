@@ -27,17 +27,9 @@
         </form>
       </section>
       <section class="todos">
-        <ul id="todo-list" class="todos-list">
-          <li data-todo-li class="todo active-todo">
-            <div class="todo__circle"></div>
-            <p class="todo__description">New Todo</p>
-            <div class="todo__close">
-              <img src="./images/icon-cross.svg" alt="" />
-            </div>
-          </li>
-        </ul>
+        <ul id="todo-list" class="todos-list"></ul>
         <div class="todos-list__info">
-          <div id="remaining-todos">5 items left</div>
+          <div id="remaining-todos">No items left</div>
           <ul class="todos-list__filter">
             <li><a href="#" class="active-filter">All</a></li>
             <li><a href="#" class="">Active</a></li>
@@ -53,7 +45,9 @@
       <li data-todo-li class="todo active-todo">
         <div class="todo__circle"></div>
         <p class="todo__description"></p>
-        <div class="todo__close"></div>
+        <div class="todo__close">
+          <img src="./images/icon-cross.svg" alt="Delete todo" />
+        </div>
       </li>
     </template>
     <script src="./dist/index.js"></script>

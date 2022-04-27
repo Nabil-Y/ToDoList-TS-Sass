@@ -107,6 +107,19 @@ body {
   margin-right: 1rem;
 }
 
+.todo__circle {
+  cursor: pointer;
+}
+.todo__circle.checked {
+  background-image: url("../../images/icon-check.svg");
+  background: linear-gradient(135deg, hsl(192deg, 100%, 67%), hsl(280deg, 87%, 65%));
+}
+
+.todo__description.checked {
+  color: grey;
+  text-decoration: line-through;
+}
+
 .header {
   display: flex;
   justify-content: space-between;
@@ -146,6 +159,9 @@ main .todos-list .todo {
 }
 main .todos-list .todo p {
   width: 90%;
+}
+main .todos-list .todo__close {
+  cursor: pointer;
 }
 main .todos-list__filter {
   display: flex;

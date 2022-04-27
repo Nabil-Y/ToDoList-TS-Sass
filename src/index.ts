@@ -1,5 +1,5 @@
 interface Todo {
-  text: string;
+  text: string | null;
   active: boolean;
 }
 
@@ -12,33 +12,77 @@ const form: HTMLFormElement | null = document.querySelector("#main-input-form");
 
 const mainInputHandler = (event: Event): void => {
   event.preventDefault();
-  mainInput?.value
-    ? todoArray.push({
-        text: mainInput.value,
-        active: true,
-      })
-    : "";
-  form?.reset();
+  if (mainInput?.value) {
+    todoArray.push({
+      text: mainInput?.value,
+      active: true,
+    });
 
-  document.querySelector(
-    "#remaining-todos"
-  )?.textContent = `${todoArray.length} items left`;
+    document.querySelector("#remaining-todos")!.textContent =
+      HowManyItemsLeft();
 
-  createTodos(mainInput?.value);
+    createTodos(mainInput!.value);
+
+    form!.reset();
+  }
 };
 
 form?.addEventListener("submit", mainInputHandler);
 
-const template: any = document
+const template: Node | undefined = document
   .querySelector("template")
   ?.content.cloneNode(true);
 
-const todoLI: any = template?.children[0];
+const todoLI: ChildNode = template!.childNodes[1];
 
 const createTodos = (text: string): void => {
-  const newLI: HTMLLIElement = todoLI;
+  const newLI = todoLI.cloneNode(true) as HTMLElement;
 
-  newLI.querySelector("p")?.textContent = text;
+  newLI.querySelector("p")!.textContent = text;
 
-  document.querySelector("#todo-list")?.appendChild(newLI.cloneNode(true));
+  newLI.querySelector(".todo__close")?.addEventListener("click", deleteTodo);
+  newLI.querySelector(".todo__circle")?.addEventListener("click", checkTodo);
+
+  document.querySelector("#todo-list")?.appendChild(newLI);
+};
+
+const deleteTodo = (event: Event): void => {
+  const todoTarget = event.currentTarget as HTMLElement;
+  const todoText = todoTarget.previousElementSibling!.textContent as string;
+  const todoToBeDeleted: HTMLElement = todoTarget.parentElement!;
+  document.querySelector(".todos-list")!.removeChild(todoToBeDeleted);
+
+  const index: number = todoArray.findIndex(
+    (item: Todo) => item.text === todoText
+  );
+
+  todoArray.splice(index, 1);
+
+  document.querySelector("#remaining-todos")!.textContent = HowManyItemsLeft();
+};
+
+const checkTodo = (event: Event): void => {
+  const todoCircle = event.currentTarget as HTMLElement;
+  const todoDescription = todoCircle.nextElementSibling as HTMLElement;
+  const todoText = todoDescription.textContent as string;
+  todoCircle.classList.toggle("checked");
+  todoDescription.classList.toggle("checked");
+
+  const index: number = todoArray.findIndex(
+    (item: Todo) => item.text === todoText
+  );
+
+  todoArray[index].active = !todoArray[index].active;
+
+  document.querySelector("#remaining-todos")!.textContent = HowManyItemsLeft();
+};
+
+const HowManyItemsLeft = (): string => {
+  let counter = 0 as number;
+  todoArray.forEach((item) => (item.active ? (counter += 1) : ""));
+  const response =
+    todoArray.length === 0
+      ? "No items left"
+      : (`${counter} items left` as string);
+  return response;
 };

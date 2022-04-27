@@ -16,3 +16,21 @@ body {
   border: 1px solid grey;
   margin-right: 1rem;
 }
+
+.todo__circle {
+  cursor: pointer;
+
+  &.checked {
+    background-image: url("../../images/icon-check.svg");
+    background: linear-gradient(
+      135deg,
+      hsl(192, 100%, 67%),
+      hsl(280, 87%, 65%)
+    );
+  }
+}
+
+.todo__description.checked {
+  color: grey;
+  text-decoration: line-through;
+}
