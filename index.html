@@ -17,23 +17,29 @@
     <main>
       <section class="main__input">
         <div class="circle"></div>
-        <label for="main-input" class="disappear">Main input</label>
-        <input type="text" placeholder="Create a new todo..." id="main-input" />
+        <form id="main-input-form">
+          <label for="main-input" class="disappear">Main input</label>
+          <input
+            type="text"
+            placeholder="Create a new todo..."
+            id="main-input"
+          />
+        </form>
       </section>
       <section class="todos">
-        <div id="todo-list" class="todos-list">
-          <div data-todo-li class="todo">
+        <ul id="todo-list" class="todos-list">
+          <li data-todo-li class="todo active-todo">
             <div class="todo__circle"></div>
             <p class="todo__description">New Todo</p>
             <div class="todo__close">
               <img src="./images/icon-cross.svg" alt="" />
             </div>
-          </div>
-        </div>
+          </li>
+        </ul>
         <div class="todos-list__info">
           <div id="remaining-todos">5 items left</div>
           <ul class="todos-list__filter">
-            <li><a href="#" class="active">All</a></li>
+            <li><a href="#" class="active-filter">All</a></li>
             <li><a href="#" class="">Active</a></li>
             <li><a href="#" class="">Completed</a></li>
           </ul>
@@ -44,11 +50,11 @@
       </section>
     </main>
     <template>
-      <div data-todo-li class="todo">
+      <li data-todo-li class="todo active-todo">
         <div class="todo__circle"></div>
         <p class="todo__description"></p>
         <div class="todo__close"></div>
-      </div>
+      </li>
     </template>
     <script src="./dist/index.js"></script>
   </body>
