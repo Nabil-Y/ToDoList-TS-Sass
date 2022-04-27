@@ -1,3 +1,165 @@
+.hidden {
+  visibility: hidden;
+}
 
+.disappear {
+  display: none;
+}
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin */
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Remove list styles on ul, ol elements with a list role, which suggests default styling will be removed */
+ul,
+ol {
+  list-style: none;
+  padding-left: 0;
+}
+
+/* Set core root defaults */
+html:focus-within {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+  padding: 0;
+}
+
+/* A elements that don't have a class get default styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Make images easier to work with */
+img,
+video,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* Remove all animations and transitions for people that prefer not to see them */
+@media (prefers-reduced-motion: reduce) {
+  html:focus-within {
+    scroll-behavior: auto;
+  }
+
+  *,
+*::before,
+*::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  background-image: url("../../images/bg-desktop-light.jpg");
+  background-repeat: no-repeat;
+  background-color: #333555;
+  padding: 1rem;
+}
+
+.circle,
+.todo__circle {
+  height: 25px;
+  width: 25px;
+  border-radius: 50%;
+  border: 1px solid grey;
+  margin-right: 1rem;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  width: min(500px, 100%);
+  margin: 4rem auto 2rem;
+  padding-left: 1rem;
+}
+.header__button {
+  padding: 0;
+}
+
+main {
+  width: min(500px, 100%);
+  margin: auto;
+}
+main .main__input {
+  display: flex;
+  padding: 1rem;
+  background-color: white;
+  border-radius: 5px;
+}
+main .main__input input {
+  width: 90%;
+  border: none;
+  outline: none;
+}
+main .todos {
+  margin-top: 2rem;
+  background-color: white;
+  border-radius: 5px;
+}
+main .todos-list .todo {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid grey;
+}
+main .todos-list .todo p {
+  width: 90%;
+}
+main .todos-list__filter {
+  display: flex;
+}
+main .todos-list__filter li {
+  padding: 0 0.4rem;
+}
+main .todos-list__info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+  font-size: 14px;
+}
 
 /*# sourceMappingURL=index.css.map */
