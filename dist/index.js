@@ -1,32 +1,37 @@
 "use strict";
 var _a;
-const todoArray = [];
-const mainInput = document.querySelector("#main-input");
+let todoArray = [];
+// Main search bar
 const form = document.querySelector("#main-input-form");
 const mainInputHandler = (event) => {
+    const mainInput = document.querySelector("#main-input");
     event.preventDefault();
-    if (mainInput === null || mainInput === void 0 ? void 0 : mainInput.value) {
-        todoArray.push({
-            text: mainInput === null || mainInput === void 0 ? void 0 : mainInput.value,
+    if (mainInput.value) {
+        const newTodo = {
+            text: mainInput.value,
             active: true,
-        });
-        document.querySelector("#remaining-todos").textContent =
-            HowManyItemsLeft();
-        createTodos(mainInput.value);
+        };
+        todoArray.push(newTodo);
+        howManyTodosLeft();
+        createTodo(newTodo);
         form.reset();
     }
 };
-form === null || form === void 0 ? void 0 : form.addEventListener("submit", mainInputHandler);
-const template = (_a = document
-    .querySelector("template")) === null || _a === void 0 ? void 0 : _a.content.cloneNode(true);
+form.addEventListener("submit", mainInputHandler);
+// Todo creation
+const template = document
+    .querySelector("template")
+    .content.cloneNode(true);
 const todoLI = template.childNodes[1];
-const createTodos = (text) => {
-    var _a, _b, _c;
+const createTodo = (todo) => {
     const newLI = todoLI.cloneNode(true);
-    newLI.querySelector("p").textContent = text;
-    (_a = newLI.querySelector(".todo__close")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", deleteTodo);
-    (_b = newLI.querySelector(".todo__circle")) === null || _b === void 0 ? void 0 : _b.addEventListener("click", checkTodo);
-    (_c = document.querySelector("#todo-list")) === null || _c === void 0 ? void 0 : _c.appendChild(newLI);
+    newLI.querySelector("p").textContent = todo.text;
+    todo.active
+        ? ""
+        : newLI.querySelector(".todo__circle").classList.add("checked");
+    newLI.querySelector(".todo__close").addEventListener("click", deleteTodo);
+    newLI.querySelector(".todo__circle").addEventListener("click", checkTodo);
+    document.querySelector("#todo-list").appendChild(newLI);
 };
 const deleteTodo = (event) => {
     const todoTarget = event.currentTarget;
@@ -35,8 +40,37 @@ const deleteTodo = (event) => {
     document.querySelector(".todos-list").removeChild(todoToBeDeleted);
     const index = todoArray.findIndex((item) => item.text === todoText);
     todoArray.splice(index, 1);
-    document.querySelector("#remaining-todos").textContent = HowManyItemsLeft();
+    howManyTodosLeft();
 };
+const updateTodo = (array) => {
+    document.querySelector("#todo-list").innerHTML = "";
+    array.forEach((todo) => createTodo(todo));
+};
+const clearCompleted = () => {
+    todoArray = todoArray.filter((todo) => todo.active === true);
+    updateTodo(todoArray);
+};
+const filterTodo = (event) => {
+    let filteredArray = [];
+    const target = event.target;
+    switch (target.textContent) {
+        case "All":
+            filteredArray = todoArray.slice();
+            break;
+        case "Active":
+            filteredArray = todoArray.filter((todo) => todo.active === true);
+            break;
+        case "Completed":
+            filteredArray = todoArray.filter((todo) => todo.active === false);
+            break;
+    }
+    updateTodo(filteredArray);
+};
+document
+    .querySelectorAll(".todos-list__filter a")
+    .forEach((link) => link.addEventListener("click", filterTodo));
+(_a = document
+    .querySelector(".todos-list__button")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearCompleted);
 const checkTodo = (event) => {
     const todoCircle = event.currentTarget;
     const todoDescription = todoCircle.nextElementSibling;
@@ -45,13 +79,13 @@ const checkTodo = (event) => {
     todoDescription.classList.toggle("checked");
     const index = todoArray.findIndex((item) => item.text === todoText);
     todoArray[index].active = !todoArray[index].active;
-    document.querySelector("#remaining-todos").textContent = HowManyItemsLeft();
+    howManyTodosLeft();
 };
-const HowManyItemsLeft = () => {
+const howManyTodosLeft = () => {
     let counter = 0;
     todoArray.forEach((item) => (item.active ? (counter += 1) : ""));
     const response = todoArray.length === 0
         ? "No items left"
         : `${counter} items left`;
-    return response;
+    document.querySelector("#remaining-todos").textContent = response;
 };

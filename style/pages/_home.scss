@@ -1,9 +1,14 @@
 .header {
   display: flex;
   justify-content: space-between;
-  width: min(500px, 100%);
-  margin: 4rem auto 2rem;
-  padding-left: 1rem;
+  width: min(520px, 100%);
+  margin: 3rem auto 2rem;
+
+  &__title {
+    color: white;
+    letter-spacing: 1.2rem;
+    font-size: 2.6rem;
+  }
 
   &__button {
     padding: 0;
@@ -11,12 +16,12 @@
 }
 
 main {
-  width: min(500px, 100%);
+  width: min(520px, 100%);
   margin: auto;
 
   .main__input {
     display: flex;
-    padding: 1rem;
+    padding: 1.2rem;
     background-color: white;
     border-radius: 5px;
 
@@ -28,7 +33,7 @@ main {
   }
 
   .todos {
-    margin-top: 2rem;
+    margin-top: 1.4rem;
     background-color: white;
     border-radius: 5px;
 
@@ -36,7 +41,7 @@ main {
       .todo {
         display: flex;
         align-items: center;
-        padding: 1rem;
+        padding: 1.2rem;
         border-bottom: 1px solid grey;
 
         p {
@@ -51,9 +56,10 @@ main {
 
     &-list__filter {
       display: flex;
+      font-weight: bold;
 
       li {
-        padding: 0 0.4rem;
+        padding: 0 0.3rem;
       }
     }
 
