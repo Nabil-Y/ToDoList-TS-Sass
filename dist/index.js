@@ -49,10 +49,20 @@ const updateTodo = (array) => {
 const clearCompleted = () => {
     todoArray = todoArray.filter((todo) => todo.active === true);
     updateTodo(todoArray);
+    document
+        .querySelectorAll(".todos-list__filter a")
+        .forEach((item) => item.classList.remove("active-filter"));
+    document
+        .querySelectorAll(".todos-list__filter a")[0]
+        .classList.add("active-filter");
 };
 const filterTodo = (event) => {
     let filteredArray = [];
     const target = event.target;
+    document
+        .querySelectorAll(".todos-list__filter a")
+        .forEach((item) => item.classList.remove("active-filter"));
+    target.classList.add("active-filter");
     switch (target.textContent) {
         case "All":
             filteredArray = todoArray.slice();
@@ -70,7 +80,7 @@ document
     .querySelectorAll(".todos-list__filter a")
     .forEach((link) => link.addEventListener("click", filterTodo));
 (_a = document
-    .querySelector(".todos-list__button")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearCompleted);
+    .querySelector(".todos-list__clear")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearCompleted);
 const checkTodo = (event) => {
     const todoCircle = event.currentTarget;
     const todoDescription = todoCircle.nextElementSibling;
@@ -89,3 +99,25 @@ const howManyTodosLeft = () => {
         : `${counter} items left`;
     document.querySelector("#remaining-todos").textContent = response;
 };
+// Theme switch
+const themeToggle = () => {
+    document.body.getAttribute("data-theme") === "light"
+        ? document.body.setAttribute("data-theme", "dark")
+        : document.body.setAttribute("data-theme", "light");
+    document
+        .querySelectorAll("header img")
+        .forEach((img) => img.classList.toggle("disappear"));
+};
+document.querySelector("header button").addEventListener("click", themeToggle);
+// responsive filter
+const filterCheck = () => {
+    const filterWrapperInside = document.querySelector(".filter-wrapper-inside");
+    const filterWrapperOutside = document.querySelector(".filter-wrapper-outside");
+    if (window.innerWidth <= 768) {
+        filterWrapperOutside.appendChild(document.querySelector(".todos-list__filter"));
+    }
+    else {
+        filterWrapperInside.appendChild(document.querySelector(".todos-list__filter"));
+    }
+};
+window.addEventListener("resize", filterCheck);

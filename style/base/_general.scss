@@ -2,9 +2,9 @@
 
 body {
   font-family: "Josefin Sans", sans-serif;
-  background-image: url("../../images/bg-desktop-light.jpg");
+  background-image: var(--background-img);
   background-repeat: no-repeat;
-  background-color: #333555;
+  background-color: var(--background-site);
   background-size: contain;
   padding: 1rem;
 }
@@ -14,7 +14,7 @@ body {
   height: 25px;
   width: 25px;
   border-radius: 50%;
-  border: 1px solid grey;
+  border: 1px solid var(--dark-grey);
   margin-right: 1rem;
 }
 
@@ -23,11 +23,7 @@ body {
 
   &.checked {
     position: relative;
-    background-image: linear-gradient(
-      135deg,
-      hsl(192, 100%, 67%),
-      hsl(280, 87%, 65%)
-    );
+    background-image: var(--check-background);
 
     &::after {
       content: url("../../images/icon-check.svg");
@@ -39,6 +35,6 @@ body {
 }
 
 .todo__description.checked {
-  color: grey;
+  color: var(--dark-grey);
   text-decoration: line-through;
 }

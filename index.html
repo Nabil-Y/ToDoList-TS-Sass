@@ -7,11 +7,16 @@
     <link rel="icon" href="./images/favicon-32x32.png" />
     <title>Frontend Mentor | Todo app</title>
   </head>
-  <body>
+  <body data-theme="light">
     <header class="header">
       <h1 class="header__title">TODO</h1>
       <button class="header__button" type="button">
         <img src="./images/icon-moon.svg" alt="Dark mode toggle" />
+        <img
+          src="./images/icon-sun.svg"
+          class="disappear"
+          alt="Dark mode toggle"
+        />
       </button>
     </header>
     <main>
@@ -30,14 +35,17 @@
         <ul id="todo-list" class="todos-list"></ul>
         <div class="todos-list__info">
           <div id="remaining-todos">No items left</div>
-          <ul class="todos-list__filter">
-            <li><a href="#" class="active-filter">All</a></li>
-            <li><a href="#" class="">Active</a></li>
-            <li><a href="#" class="">Completed</a></li>
-          </ul>
-          <a href="#" class="todos-list__button">Clear Completed</a>
+          <div class="filter-wrapper-inside">
+            <ul class="todos-list__filter">
+              <li><a href="#" class="active-filter">All</a></li>
+              <li><a href="#" class="">Active</a></li>
+              <li><a href="#" class="">Completed</a></li>
+            </ul>
+          </div>
+          <a href="#" class="todos-list__clear">Clear Completed</a>
         </div>
       </section>
+      <div class="filter-wrapper-outside todos"></div>
     </main>
     <template>
       <li data-todo-li class="todo active-todo">

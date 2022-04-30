@@ -71,11 +71,21 @@ const updateTodo = (array: Todo[]): void => {
 const clearCompleted = (): void => {
   todoArray = todoArray.filter((todo) => todo.active === true);
   updateTodo(todoArray);
+  document
+    .querySelectorAll(".todos-list__filter a")
+    .forEach((item) => item.classList.remove("active-filter"));
+  document
+    .querySelectorAll(".todos-list__filter a")[0]
+    .classList.add("active-filter");
 };
 
 const filterTodo = (event: Event): void => {
   let filteredArray: Todo[] = [];
   const target = event.target! as HTMLElement;
+  document
+    .querySelectorAll(".todos-list__filter a")
+    .forEach((item) => item.classList.remove("active-filter"));
+  target.classList.add("active-filter");
   switch (target.textContent) {
     case "All":
       filteredArray = todoArray.slice();
@@ -91,11 +101,11 @@ const filterTodo = (event: Event): void => {
 };
 
 document
-  .querySelectorAll(".todos-list__filter a")!
+  .querySelectorAll(".todos-list__filter a")
   .forEach((link) => link.addEventListener("click", filterTodo));
 
 document
-  .querySelector(".todos-list__button")
+  .querySelector(".todos-list__clear")
   ?.addEventListener("click", clearCompleted);
 
 const checkTodo = (event: Event): void => {
@@ -122,3 +132,37 @@ const howManyTodosLeft = (): void => {
       : (`${counter} items left` as string);
   document.querySelector("#remaining-todos")!.textContent = response;
 };
+
+// Theme switch
+
+const themeToggle = (): void => {
+  document.body.getAttribute("data-theme") === "light"
+    ? document.body.setAttribute("data-theme", "dark")
+    : document.body.setAttribute("data-theme", "light");
+
+  document
+    .querySelectorAll("header img")!
+    .forEach((img) => img.classList.toggle("disappear"));
+};
+
+document.querySelector("header button")!.addEventListener("click", themeToggle);
+
+// responsive filter
+
+const filterCheck = (): void => {
+  const filterWrapperInside = document.querySelector(".filter-wrapper-inside");
+  const filterWrapperOutside = document.querySelector(
+    ".filter-wrapper-outside"
+  );
+  if (window.innerWidth <= 768) {
+    filterWrapperOutside!.appendChild(
+      document.querySelector(".todos-list__filter")!
+    );
+  } else {
+    filterWrapperInside!.appendChild(
+      document.querySelector(".todos-list__filter")!
+    );
+  }
+};
+
+window.addEventListener("resize", filterCheck);
