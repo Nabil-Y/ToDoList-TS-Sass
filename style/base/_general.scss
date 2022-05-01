@@ -11,30 +11,52 @@ body {
 
 .circle,
 .todo__circle {
-  height: 25px;
+  position: relative;
+  height: 27px;
   aspect-ratio: 1 / 1;
   border-radius: 50%;
-  border: 1px solid var(--dark-grey);
   margin-right: 1rem;
+  background-color: var(--dark-grey);
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 1px;
+    height: 25px;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    background-color: var(--background-components);
+  }
+
+  &::before {
+    content: url('../../images/icon-check.svg');
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 5%);
+  }
 }
 
 .todo__circle {
   cursor: pointer;
 
-  &.checked {
-    position: relative;
-    background-image: var(--check-background);
+  &:hover {
+    background: var(--check-background);
+  }
 
+  &.checked {
+    background: var(--check-background);
     &::after {
-      content: url('../../images/icon-check.svg');
-      position: absolute;
-      left: 50%;
-      transform: translate(-50%, -5%);
+      background: transparent;
     }
   }
 }
 
 .todo__description.checked {
-  color: var(--dark-grey);
+  color: var(--light-grey);
   text-decoration: line-through;
+}
+
+.hover-link:hover {
+  color: var(--text-color);
 }

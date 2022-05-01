@@ -29,12 +29,12 @@
           <div id="remaining-todos">No items left</div>
           <div class="filter-wrapper-inside">
             <ul class="todos-list__filter">
-              <li><a href="#" class="active-filter">All</a></li>
-              <li><a href="#" class="">Active</a></li>
-              <li><a id="completed-filter" href="#" class="">Completed</a></li>
+              <li><a href="#" class="hover-link active-filter">All</a></li>
+              <li><a href="#" class="hover-link">Active</a></li>
+              <li><a id="completed-filter" href="#" class="hover-link">Completed</a></li>
             </ul>
           </div>
-          <a href="#" class="todos-list__clear">Clear Completed</a>
+          <a href="#" class="todos-list__clear hover-link">Clear Completed</a>
         </div>
       </section>
       <div class="filter-wrapper-outside todos"></div>
@@ -44,7 +44,7 @@
         <div class="todo__circle"></div>
         <p class="todo__description"></p>
         <div class="todo__close">
-          <img src="./images/icon-cross.svg" alt="Delete todo" />
+          <img class="disappear" src="./images/icon-cross.svg" alt="Delete todo" />
         </div>
       </li>
     </template>

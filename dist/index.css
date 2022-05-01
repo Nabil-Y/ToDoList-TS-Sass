@@ -1,13 +1,9 @@
 @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;700&display=swap");
 :root {
   --primary-color: hsl(220, 98%, 61%);
-  --check-background: linear-gradient(
-    135deg,
-    hsl(192, 100%, 67%),
-    hsl(280, 87%, 65%)
-  );
-  --light-grey: hsl(233, 14%, 35%);
-  --dark-grey: hsl(236, 9%, 61%);
+  --check-background: linear-gradient(135deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+  --dark-grey: hsl(234, 11%, 52%);
+  --light-grey: hsl(236, 9%, 61%);
   --text-title: hsl(0, 0%, 98%);
   --drop-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
   --text-color: #333;
@@ -135,30 +131,52 @@ body {
 
 .circle,
 .todo__circle {
+  position: relative;
+  height: 27px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  margin-right: 1rem;
+  background-color: var(--dark-grey);
+}
+.circle::after,
+.todo__circle::after {
+  content: "";
+  position: absolute;
+  top: 1px;
+  left: 1px;
   height: 25px;
   aspect-ratio: 1/1;
   border-radius: 50%;
-  border: 1px solid var(--dark-grey);
-  margin-right: 1rem;
+  background-color: var(--background-components);
+}
+.circle::before,
+.todo__circle::before {
+  content: url("../../images/icon-check.svg");
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 5%);
 }
 
 .todo__circle {
   cursor: pointer;
 }
+.todo__circle:hover {
+  background: var(--check-background);
+}
 .todo__circle.checked {
-  position: relative;
-  background-image: var(--check-background);
+  background: var(--check-background);
 }
 .todo__circle.checked::after {
-  content: url("../../images/icon-check.svg");
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, -5%);
+  background: transparent;
 }
 
 .todo__description.checked {
-  color: var(--dark-grey);
+  color: var(--light-grey);
   text-decoration: line-through;
+}
+
+.hover-link:hover {
+  color: var(--text-color);
 }
 
 .header {
@@ -206,13 +224,16 @@ main .todos-list .todo {
   display: flex;
   align-items: center;
   padding: 1.2rem;
-  border-bottom: 1px solid var(--dark-grey);
+  border-bottom: 1px solid var(--light-grey);
 }
 main .todos-list .todo p {
   width: 90%;
 }
 main .todos-list .todo__close {
   cursor: pointer;
+}
+main .todos-list .todo:hover img {
+  display: block;
 }
 main .todos-list__filter {
   display: flex;
@@ -241,6 +262,7 @@ main .todos-list__info {
 }
 .filter-wrapper-outside ul li {
   padding: 0 1rem;
+  color: var(--light-grey);
 }
 
 @media screen and (max-width: 768px) {
@@ -254,6 +276,10 @@ main .todos-list__info {
   }
   .header__button {
     padding: 0;
+  }
+
+  .todo img {
+    display: block;
   }
 }
 @media screen and (max-width: 550px) {

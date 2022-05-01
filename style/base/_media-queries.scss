@@ -12,6 +12,12 @@
       padding: 0;
     }
   }
+
+  .todo {
+    img {
+      display: block;
+    }
+  }
 }
 
 @media screen and (max-width: 550px) {

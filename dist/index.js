@@ -42,7 +42,10 @@ const todoLI = template.childNodes[1];
 const createTodoHTML = (todo) => {
     const newLI = todoLI.cloneNode(true);
     newLI.querySelector('p').textContent = todo.text;
-    todo.active ? '' : newLI.querySelector('.todo__circle').classList.add('checked');
+    if (!todo.active) {
+        newLI.querySelector('.todo__circle').classList.add('checked');
+        newLI.querySelector('.todo__description').classList.add('checked');
+    }
     newLI.querySelector('.todo__close').addEventListener('click', deleteTodo);
     newLI.querySelector('.todo__circle').addEventListener('click', checkTodo);
     document.querySelector('#todo-list').appendChild(newLI);
