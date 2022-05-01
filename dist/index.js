@@ -1,5 +1,4 @@
 "use strict";
-var _a;
 let todoArray = [];
 // Main search bar
 const form = document.querySelector("#main-input-form");
@@ -17,8 +16,7 @@ const mainInputHandler = (event) => {
         form.reset();
     }
 };
-form.addEventListener("submit", mainInputHandler);
-// Todo creation
+// Create one todo
 const template = document
     .querySelector("template")
     .content.cloneNode(true);
@@ -33,6 +31,7 @@ const createTodo = (todo) => {
     newLI.querySelector(".todo__circle").addEventListener("click", checkTodo);
     document.querySelector("#todo-list").appendChild(newLI);
 };
+// Delete one todo
 const deleteTodo = (event) => {
     const todoTarget = event.currentTarget;
     const todoText = todoTarget.previousElementSibling.textContent;
@@ -42,13 +41,14 @@ const deleteTodo = (event) => {
     todoArray.splice(index, 1);
     howManyTodosLeft();
 };
-const updateTodo = (array) => {
+// Reset TodoList and update it with new content
+const updateTodoList = (array) => {
     document.querySelector("#todo-list").innerHTML = "";
     array.forEach((todo) => createTodo(todo));
 };
 const clearCompleted = () => {
     todoArray = todoArray.filter((todo) => todo.active === true);
-    updateTodo(todoArray);
+    updateTodoList(todoArray);
     document
         .querySelectorAll(".todos-list__filter a")
         .forEach((item) => item.classList.remove("active-filter"));
@@ -56,7 +56,8 @@ const clearCompleted = () => {
         .querySelectorAll(".todos-list__filter a")[0]
         .classList.add("active-filter");
 };
-const filterTodo = (event) => {
+// Filter todo list function
+const filterTodoList = (event) => {
     let filteredArray = [];
     const target = event.target;
     document
@@ -74,13 +75,9 @@ const filterTodo = (event) => {
             filteredArray = todoArray.filter((todo) => todo.active === false);
             break;
     }
-    updateTodo(filteredArray);
+    updateTodoList(filteredArray);
 };
-document
-    .querySelectorAll(".todos-list__filter a")
-    .forEach((link) => link.addEventListener("click", filterTodo));
-(_a = document
-    .querySelector(".todos-list__clear")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearCompleted);
+// Check Todo List
 const checkTodo = (event) => {
     const todoCircle = event.currentTarget;
     const todoDescription = todoCircle.nextElementSibling;
@@ -91,6 +88,7 @@ const checkTodo = (event) => {
     todoArray[index].active = !todoArray[index].active;
     howManyTodosLeft();
 };
+// Updates HTML element displaying remaining todos
 const howManyTodosLeft = () => {
     let counter = 0;
     todoArray.forEach((item) => (item.active ? (counter += 1) : ""));
@@ -116,8 +114,8 @@ const themeToggle = () => {
         .querySelectorAll("header img")
         .forEach((img) => img.classList.toggle("disappear"));
 };
-document.querySelector("header button").addEventListener("click", themeToggle);
-const detectPreferedTheme = () => {
+// Detects user prefered theme and saves the info
+const detectUserPreferedTheme = () => {
     if (localStorage.getItem("theme") === "light")
         return;
     if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
@@ -128,7 +126,7 @@ const detectPreferedTheme = () => {
         localStorage.setItem("theme", "light");
     }
 };
-// responsive filter
+// Change filter display depending on screen size
 const filterCheck = () => {
     const filterWrapperInside = document.querySelector(".filter-wrapper-inside");
     const filterWrapperOutside = document.querySelector(".filter-wrapper-outside");
@@ -139,8 +137,22 @@ const filterCheck = () => {
         filterWrapperInside.appendChild(document.querySelector(".todos-list__filter"));
     }
 };
-window.addEventListener("resize", filterCheck);
+// Starting functions
+const addEventListeners = () => {
+    var _a;
+    form.addEventListener("submit", mainInputHandler);
+    document
+        .querySelectorAll(".todos-list__filter a")
+        .forEach((link) => link.addEventListener("click", filterTodoList));
+    (_a = document
+        .querySelector(".todos-list__clear")) === null || _a === void 0 ? void 0 : _a.addEventListener("click", clearCompleted);
+    document
+        .querySelector("header button")
+        .addEventListener("click", themeToggle);
+    window.addEventListener("resize", filterCheck);
+};
 const init = () => {
-    detectPreferedTheme();
+    detectUserPreferedTheme();
+    addEventListeners();
 };
 init();

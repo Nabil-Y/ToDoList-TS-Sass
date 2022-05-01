@@ -24,9 +24,7 @@ const mainInputHandler = (event: Event): void => {
   }
 };
 
-form.addEventListener("submit", mainInputHandler);
-
-// Todo creation
+// Create one todo
 
 const template: Node = document
   .querySelector("template")!
@@ -49,6 +47,7 @@ const createTodo = (todo: Todo): void => {
   document.querySelector("#todo-list")!.appendChild(newLI);
 };
 
+// Delete one todo
 const deleteTodo = (event: Event): void => {
   const todoTarget = event.currentTarget as HTMLElement;
   const todoText = todoTarget.previousElementSibling!.textContent as string;
@@ -63,14 +62,15 @@ const deleteTodo = (event: Event): void => {
   howManyTodosLeft();
 };
 
-const updateTodo = (array: Todo[]): void => {
+// Reset TodoList and update it with new content
+const updateTodoList = (array: Todo[]): void => {
   document.querySelector("#todo-list")!.innerHTML = "";
   array.forEach((todo) => createTodo(todo));
 };
 
 const clearCompleted = (): void => {
   todoArray = todoArray.filter((todo) => todo.active === true);
-  updateTodo(todoArray);
+  updateTodoList(todoArray);
   document
     .querySelectorAll(".todos-list__filter a")
     .forEach((item) => item.classList.remove("active-filter"));
@@ -79,7 +79,8 @@ const clearCompleted = (): void => {
     .classList.add("active-filter");
 };
 
-const filterTodo = (event: Event): void => {
+// Filter todo list function
+const filterTodoList = (event: Event): void => {
   let filteredArray: Todo[] = [];
   const target = event.target! as HTMLElement;
   document
@@ -97,17 +98,10 @@ const filterTodo = (event: Event): void => {
       filteredArray = todoArray.filter((todo) => todo.active === false);
       break;
   }
-  updateTodo(filteredArray);
+  updateTodoList(filteredArray);
 };
 
-document
-  .querySelectorAll(".todos-list__filter a")
-  .forEach((link) => link.addEventListener("click", filterTodo));
-
-document
-  .querySelector(".todos-list__clear")
-  ?.addEventListener("click", clearCompleted);
-
+// Check Todo List
 const checkTodo = (event: Event): void => {
   const todoCircle = event.currentTarget as HTMLElement;
   const todoDescription = todoCircle.nextElementSibling as HTMLElement;
@@ -123,6 +117,7 @@ const checkTodo = (event: Event): void => {
   howManyTodosLeft();
 };
 
+// Updates HTML element displaying remaining todos
 const howManyTodosLeft = (): void => {
   let counter = 0 as number;
   todoArray.forEach((item) => (item.active ? (counter += 1) : ""));
@@ -154,9 +149,8 @@ const themeToggle = (): void => {
     .forEach((img) => img.classList.toggle("disappear"));
 };
 
-document.querySelector("header button")!.addEventListener("click", themeToggle);
-
-const detectPreferedTheme = (): void => {
+// Detects user prefered theme and saves the info
+const detectUserPreferedTheme = (): void => {
   if (localStorage.getItem("theme") === "light") return;
   if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
     localStorage.setItem("theme", "light");
@@ -166,7 +160,7 @@ const detectPreferedTheme = (): void => {
   }
 };
 
-// responsive filter
+// Change filter display depending on screen size
 
 const filterCheck = (): void => {
   const filterWrapperInside = document.querySelector(".filter-wrapper-inside");
@@ -184,10 +178,26 @@ const filterCheck = (): void => {
   }
 };
 
-window.addEventListener("resize", filterCheck);
+// Starting functions
+
+const addEventListeners = (): void => {
+  form.addEventListener("submit", mainInputHandler);
+  document
+    .querySelectorAll(".todos-list__filter a")
+    .forEach((link) => link.addEventListener("click", filterTodoList));
+
+  document
+    .querySelector(".todos-list__clear")
+    ?.addEventListener("click", clearCompleted);
+  document
+    .querySelector("header button")!
+    .addEventListener("click", themeToggle);
+  window.addEventListener("resize", filterCheck);
+};
 
 const init = (): void => {
-  detectPreferedTheme();
+  detectUserPreferedTheme();
+  addEventListeners();
 };
 
 init();
