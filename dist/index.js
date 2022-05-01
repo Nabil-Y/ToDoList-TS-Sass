@@ -1,5 +1,20 @@
 "use strict";
-let todoArray = [];
+let todoArray = [
+    {
+        text: 'This is from local storage',
+        active: true,
+    },
+    {
+        text: 'This is completed',
+        active: false,
+    },
+];
+if (JSON.parse(localStorage.getItem('todo-list')).length === 0) {
+    localStorage.setItem('todo-list', JSON.stringify(todoArray));
+}
+else {
+    todoArray = JSON.parse(localStorage.getItem('todo-list'));
+}
 const filterLinks = [...document.querySelectorAll('.todos-list__filter a')];
 // Main search bar
 const form = document.querySelector('#main-input-form');
@@ -13,17 +28,18 @@ const mainInputHandler = (event) => {
             active: true,
         };
         todoArray.push(newTodo);
+        localStorage.setItem('todo-list', JSON.stringify(todoArray));
         howManyTodosLeft();
         if (!completedFilter.classList.contains('active-filter')) {
-            createTodo(newTodo);
+            createTodoHTML(newTodo);
         }
         form.reset();
     }
 };
-// Create one todo
+// Create one todo html
 const template = document.querySelector('template').content.cloneNode(true);
 const todoLI = template.childNodes[1];
-const createTodo = (todo) => {
+const createTodoHTML = (todo) => {
     const newLI = todoLI.cloneNode(true);
     newLI.querySelector('p').textContent = todo.text;
     todo.active ? '' : newLI.querySelector('.todo__circle').classList.add('checked');
@@ -39,15 +55,17 @@ const deleteTodo = (event) => {
     document.querySelector('.todos-list').removeChild(todoToBeDeleted);
     const index = todoArray.findIndex((item) => item.text === todoText);
     todoArray.splice(index, 1);
+    localStorage.setItem('todo-list', JSON.stringify(todoArray));
     howManyTodosLeft();
 };
 // Reset TodoList and update it with new content
 const updateTodoList = (array) => {
     document.querySelector('#todo-list').innerHTML = '';
-    array.forEach((todo) => createTodo(todo));
+    array === null || array === void 0 ? void 0 : array.forEach((todo) => createTodoHTML(todo));
 };
 const clearCompleted = () => {
     todoArray = todoArray.filter((todo) => todo.active === true);
+    localStorage.setItem('todo-list', JSON.stringify(todoArray));
     updateTodoList(todoArray);
     filterLinks.forEach((item) => item.classList.remove('active-filter'));
     document.querySelectorAll('.todos-list__filter a')[0].classList.add('active-filter');
@@ -80,6 +98,7 @@ const checkTodo = (event) => {
     todoDescription.classList.toggle('checked');
     const index = todoArray.findIndex((item) => item.text === todoText);
     todoArray[index].active = !todoArray[index].active;
+    localStorage.setItem('todo-list', JSON.stringify(todoArray));
     howManyTodosLeft();
 };
 // Updates HTML element displaying remaining todos
@@ -137,5 +156,7 @@ const addEventListeners = () => {
 const init = () => {
     detectUserPreferedTheme();
     addEventListeners();
+    updateTodoList(JSON.parse(localStorage.getItem('todo-list')));
+    howManyTodosLeft();
 };
 init();

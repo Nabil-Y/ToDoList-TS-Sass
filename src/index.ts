@@ -3,7 +3,21 @@ interface Todo {
   text: string;
   active: boolean;
 }
-let todoArray: Todo[] = [];
+let todoArray: Todo[] = [
+  {
+    text: 'This is from local storage',
+    active: true,
+  },
+  {
+    text: 'This is completed',
+    active: false,
+  },
+];
+if (JSON.parse(localStorage.getItem('todo-list')!).length === 0) {
+  localStorage.setItem('todo-list', JSON.stringify(todoArray));
+} else {
+  todoArray = JSON.parse(localStorage.getItem('todo-list')!);
+}
 const filterLinks = [...document.querySelectorAll('.todos-list__filter a')] as HTMLAnchorElement[];
 
 // Main search bar
@@ -18,20 +32,21 @@ const mainInputHandler = (event: Event): void => {
       active: true,
     };
     todoArray.push(newTodo);
+    localStorage.setItem('todo-list', JSON.stringify(todoArray));
     howManyTodosLeft();
     if (!completedFilter.classList.contains('active-filter')) {
-      createTodo(newTodo);
+      createTodoHTML(newTodo);
     }
     form.reset();
   }
 };
 
-// Create one todo
+// Create one todo html
 const template: Node = document.querySelector('template')!.content.cloneNode(true);
 const todoLI: ChildNode = template.childNodes[1];
 
-const createTodo = (todo: Todo): void => {
-  const newLI = todoLI.cloneNode(true) as HTMLElement;
+const createTodoHTML = (todo: Todo): void => {
+  const newLI = todoLI.cloneNode(true) as HTMLLIElement;
   newLI.querySelector('p')!.textContent = todo.text;
   todo.active ? '' : newLI.querySelector('.todo__circle')!.classList.add('checked');
 
@@ -43,25 +58,27 @@ const createTodo = (todo: Todo): void => {
 
 // Delete one todo
 const deleteTodo = (event: Event): void => {
-  const todoTarget = event.currentTarget as HTMLElement;
+  const todoTarget = event.currentTarget as HTMLLIElement;
   const todoText = todoTarget.previousElementSibling!.textContent as string;
-  const todoToBeDeleted: HTMLElement = todoTarget.parentElement!;
+  const todoToBeDeleted = todoTarget.parentElement! as HTMLLIElement;
   document.querySelector('.todos-list')!.removeChild(todoToBeDeleted);
 
   const index: number = todoArray.findIndex((item: Todo) => item.text === todoText);
   todoArray.splice(index, 1);
 
+  localStorage.setItem('todo-list', JSON.stringify(todoArray));
   howManyTodosLeft();
 };
 
 // Reset TodoList and update it with new content
-const updateTodoList = (array: Todo[]): void => {
+const updateTodoList = (array: Todo[] | null): void => {
   document.querySelector('#todo-list')!.innerHTML = '';
-  array.forEach((todo) => createTodo(todo));
+  array?.forEach((todo) => createTodoHTML(todo));
 };
 
 const clearCompleted = (): void => {
   todoArray = todoArray.filter((todo) => todo.active === true);
+  localStorage.setItem('todo-list', JSON.stringify(todoArray));
   updateTodoList(todoArray);
 
   filterLinks.forEach((item) => item.classList.remove('active-filter'));
@@ -71,7 +88,7 @@ const clearCompleted = (): void => {
 // Filter todo list function
 const filterTodoList = (event: Event): void => {
   let filteredArray: Todo[] = [];
-  const target = event.target! as HTMLElement;
+  const target = event.target! as HTMLAnchorElement;
   filterLinks.forEach((item) => item.classList.remove('active-filter'));
   target.classList.add('active-filter');
   switch (target.textContent) {
@@ -90,8 +107,8 @@ const filterTodoList = (event: Event): void => {
 
 // Check Todo List
 const checkTodo = (event: Event): void => {
-  const todoCircle = event.currentTarget as HTMLElement;
-  const todoDescription = todoCircle.nextElementSibling as HTMLElement;
+  const todoCircle = event.currentTarget as HTMLDivElement;
+  const todoDescription = todoCircle.nextElementSibling as HTMLParagraphElement;
   const todoText = todoDescription.textContent as string;
   todoCircle.classList.toggle('checked');
   todoDescription.classList.toggle('checked');
@@ -99,6 +116,7 @@ const checkTodo = (event: Event): void => {
   const index: number = todoArray.findIndex((item: Todo) => item.text === todoText);
   todoArray[index].active = !todoArray[index].active;
 
+  localStorage.setItem('todo-list', JSON.stringify(todoArray));
   howManyTodosLeft();
 };
 
@@ -163,6 +181,8 @@ const addEventListeners = (): void => {
 const init = (): void => {
   detectUserPreferedTheme();
   addEventListeners();
+  updateTodoList(JSON.parse(localStorage.getItem('todo-list')!));
+  howManyTodosLeft();
 };
 
 init();
