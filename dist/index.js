@@ -100,15 +100,34 @@ const howManyTodosLeft = () => {
     document.querySelector("#remaining-todos").textContent = response;
 };
 // Theme switch
+const changeThemeToDark = () => {
+    document.body.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+};
+const changeThemeToLight = () => {
+    document.body.setAttribute("data-theme", "light");
+    localStorage.setItem("theme", "light");
+};
 const themeToggle = () => {
-    document.body.getAttribute("data-theme") === "light"
-        ? document.body.setAttribute("data-theme", "dark")
-        : document.body.setAttribute("data-theme", "light");
+    localStorage.getItem("theme") === "light"
+        ? changeThemeToDark()
+        : changeThemeToLight();
     document
         .querySelectorAll("header img")
         .forEach((img) => img.classList.toggle("disappear"));
 };
 document.querySelector("header button").addEventListener("click", themeToggle);
+const detectPreferedTheme = () => {
+    if (localStorage.getItem("theme") === "light")
+        return;
+    if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+        localStorage.setItem("theme", "light");
+        themeToggle();
+    }
+    else {
+        localStorage.setItem("theme", "light");
+    }
+};
 // responsive filter
 const filterCheck = () => {
     const filterWrapperInside = document.querySelector(".filter-wrapper-inside");
@@ -121,3 +140,7 @@ const filterCheck = () => {
     }
 };
 window.addEventListener("resize", filterCheck);
+const init = () => {
+    detectPreferedTheme();
+};
+init();

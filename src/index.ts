@@ -135,10 +135,19 @@ const howManyTodosLeft = (): void => {
 
 // Theme switch
 
+const changeThemeToDark = (): void => {
+  document.body.setAttribute("data-theme", "dark");
+  localStorage.setItem("theme", "dark");
+};
+const changeThemeToLight = (): void => {
+  document.body.setAttribute("data-theme", "light");
+  localStorage.setItem("theme", "light");
+};
+
 const themeToggle = (): void => {
-  document.body.getAttribute("data-theme") === "light"
-    ? document.body.setAttribute("data-theme", "dark")
-    : document.body.setAttribute("data-theme", "light");
+  localStorage.getItem("theme") === "light"
+    ? changeThemeToDark()
+    : changeThemeToLight();
 
   document
     .querySelectorAll("header img")!
@@ -146,6 +155,16 @@ const themeToggle = (): void => {
 };
 
 document.querySelector("header button")!.addEventListener("click", themeToggle);
+
+const detectPreferedTheme = (): void => {
+  if (localStorage.getItem("theme") === "light") return;
+  if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+    localStorage.setItem("theme", "light");
+    themeToggle();
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+};
 
 // responsive filter
 
@@ -166,3 +185,9 @@ const filterCheck = (): void => {
 };
 
 window.addEventListener("resize", filterCheck);
+
+const init = (): void => {
+  detectPreferedTheme();
+};
+
+init();
