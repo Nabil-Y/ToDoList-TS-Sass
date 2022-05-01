@@ -12,11 +12,7 @@
       <h1 class="header__title">TODO</h1>
       <button class="header__button" type="button">
         <img src="./images/icon-moon.svg" alt="Dark mode toggle" />
-        <img
-          src="./images/icon-sun.svg"
-          class="disappear"
-          alt="Dark mode toggle"
-        />
+        <img src="./images/icon-sun.svg" class="disappear" alt="Dark mode toggle" />
       </button>
     </header>
     <main>
@@ -24,11 +20,7 @@
         <div class="circle"></div>
         <form id="main-input-form">
           <label for="main-input" class="disappear">Main input</label>
-          <input
-            type="text"
-            placeholder="Create a new todo..."
-            id="main-input"
-          />
+          <input type="text" placeholder="Create a new todo..." id="main-input" />
         </form>
       </section>
       <section class="todos">
@@ -39,7 +31,7 @@
             <ul class="todos-list__filter">
               <li><a href="#" class="active-filter">All</a></li>
               <li><a href="#" class="">Active</a></li>
-              <li><a href="#" class="">Completed</a></li>
+              <li><a id="completed-filter" href="#" class="">Completed</a></li>
             </ul>
           </div>
           <a href="#" class="todos-list__clear">Clear Completed</a>
